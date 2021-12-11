@@ -1,9 +1,11 @@
 <script>
 	import Game from './components/Game.svelte'
+	import Opertions from './components/Operations.svelte'
 </script>
 
 <main>
-	<Game />
+	<Opertions />
+	<Game m={8} n={8} />
 </main>
 
 <style>
@@ -15,6 +17,7 @@
 		height: 100%;
 		margin: 0 auto;
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 	}

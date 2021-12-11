@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
+    "pubsub-js": "^1.9.4",
     "sirv-cli": "^1.0.0"
   }
 }

@@ -1,6 +1,8 @@
 <script>
   import { range } from 'lodash-es'
-  import {onMount} from 'svelte'
+  import { onMount } from 'svelte'
+  import PubSub from 'pubsub-js'
+
   export let m = 5
   export let n = 5
 
@@ -54,15 +56,33 @@
     return newMatrix
   }
 
-  onMount(() => {
-    const timer = setInterval(() => {
+  let timer = null
+  function start() {
+    if (timer) {
+      return
+    }
+    matrix = nextGeneration(matrix)
+    timer = setInterval(() => {
       matrix = nextGeneration(matrix)
     }, 1000);
+  }
+  function stop() {
+    if (timer) {
+      clearInterval(timer)
+      timer = null
+    }
+  }
 
-    return () => clearInterval(timer)
+  onMount(() => {
+    // todo: is there some more `svelte` way?
+    // if we use a module context to exoport an function, we must use a store, then every `matrix` will be changed to `$matrix`
+    const startToken = PubSub.subscribe('GAME_START', start)
+    const stopToken = PubSub.subscribe('GAME_STOP', stop)
+    return () => {
+      PubSub.unsubscribe(startToken)
+      PubSub.unsubscribe(stopToken)
+    }
   })
-
-
 </script>
 
 <div>
