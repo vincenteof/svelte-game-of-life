@@ -1,11 +1,22 @@
 <script>
 	import Game from './components/Game.svelte'
 	import Opertions from './components/Operations.svelte'
+
+	// todo: can we use 2-way binding?
+	let m = 8
+	let n = 8
+
+	function onGameSizeChange(e) {
+		console.log(e)
+		const [innerM, innerN] = e.detail
+		m = innerM
+		n = innerN
+	}
 </script>
 
 <main>
-	<Opertions />
-	<Game m={8} n={8} />
+	<Opertions on:gameSizeChange={onGameSizeChange} />
+	<Game m={m} n={n} />
 </main>
 
 <style>

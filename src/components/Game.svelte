@@ -8,11 +8,9 @@
 
   let matrix = createMatrix(m, n)
 
-  console.log('matrix',matrix)
-
-  matrix[2][1] = true
-  matrix[2][2] = true
-  matrix[2][3] = true
+  $: {
+    matrix = createMatrix(m, n)
+  }
 
   function createMatrix(innerM, innerN) {
     return range(0, innerM).map(() => Array.from(new Array(innerN), () => false))
@@ -57,6 +55,7 @@
   }
 
   let timer = null
+
   function start() {
     if (timer) {
       return
@@ -70,6 +69,17 @@
     if (timer) {
       clearInterval(timer)
       timer = null
+    }
+  }
+
+  function handleClickCell(e) {
+    console.log(e)
+    const m = e?.target?.dataset?.m
+    const n = e?.target?.dataset?.n
+    if (m && n && !timer) {
+      const numberM = Number(m)
+      const numberN = Number(n)
+      matrix[numberM][numberN] = !matrix[numberM][numberN]
     }
   }
 
@@ -89,7 +99,7 @@
   {#each matrix as _,row}
     <div class="row">
       {#each matrix[row] as _,col}
-        <div class="cell" class:alive="{matrix[row][col]}" class:dead="{!matrix[row][col]}"/>
+        <div class="cell" class:alive="{matrix[row][col]}" class:dead="{!matrix[row][col]}" data-m={row} data-n={col} on:click={handleClickCell}/>
       {/each}
     </div>
   {/each}
